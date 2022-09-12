@@ -77,9 +77,10 @@ const DeviceDrawer = ({ deviceId }) => {
             <Form id="device-info-form" className="flex flex-col justify-between h-full">
               <div className="grid gap-4">
                 <Field
-                  autoComplete="off"
+                  autoComplete="on"
                   name="deviceName"
-                  type="text"
+                  type="text" // options
+                  
                   label="Device Name"
                   placeholder="Device Name"
                   component={TextInput}

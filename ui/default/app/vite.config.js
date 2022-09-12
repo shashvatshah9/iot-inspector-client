@@ -2,8 +2,11 @@ import { defineConfig } from 'vite'
 const { resolve, join } = require('path')
 import react from '@vitejs/plugin-react'
 import ViteFonts from 'vite-plugin-fonts'
+import { rmSync } from 'fs'
+import electron, { onstart } from 'vite-plugin-electron'
+import pkg from './package.json'
 
-
+rmSync('dist', { recursive: true, force: true }) // v14.14.0
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
@@ -28,6 +31,33 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    electron({
+      main: {
+        entry: join(__dirname, 'electron/main/index.ts'),
+        vite: {
+          build: {
+            // For Debug
+            sourcemap: true,
+            outDir: 'dist/electron/main',
+          },
+          // Will start Electron via VSCode Debug
+          plugins: [process.env.VSCODE_DEBUG ? onstart() : null],
+        },
+      },
+      preload: {
+        input: {
+          // You can configure multiple preload here
+          index: join(__dirname, 'electron/preload/index.ts'),
+        },
+        vite: {
+          build: {
+            // For Debug
+            sourcemap: 'inline',
+            outDir: 'dist/electron/preload',
+          },
+        },
+      }
+    }),
     ViteFonts({
       google: {
         families: ['Open Sans',
@@ -47,7 +77,9 @@ export default defineConfig({
         secure: false,
         ws: true,
       }
-    }
+    },
+    host: pkg.debug.env.VITE_DEV_SERVER_HOSTNAME,
+    port: pkg.debug.env.VITE_DEV_SERVER_PORT,
   },
   // base: '/dashboard/html/',
   // build: {

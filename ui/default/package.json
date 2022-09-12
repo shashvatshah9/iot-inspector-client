@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
-    "concurrently": "^7.2.1"
+    "concurrently": "^7.2.1",
+    "dotenv": "^16.0.2"
   },
   "scripts": {
     "mockdb": "cd ../../inspector && python3 generate_mock_data.py",
@@ -15,4 +16,3 @@
     "prisma:generate": "npx prisma generate --schema server/prisma/network_traffic_schema.prisma ; npx prisma generate --schema server/prisma/configs_schema.prisma"
   }
 }
-
