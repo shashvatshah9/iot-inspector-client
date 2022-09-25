@@ -1,7 +1,7 @@
 import { app, BrowserWindow, shell, ipcMain } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
-
+const spawn = require('child_process').spawn
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
 
@@ -46,13 +46,8 @@ async function createWindow() {
   })
 
 
-  if (app.isPackaged) {
-    win.loadFile(indexHtml)
-  } else {
-    win.loadURL(url)
-    // Open devTool if the app is not packaged
-    // win.webContents.openDevTools()
-  }
+  win.loadURL(url)
+  win.webContents.openDevTools()
 
   // Test actively push message to the Electron-Renderer
   win.webContents.on('did-finish-load', () => {
@@ -66,7 +61,10 @@ async function createWindow() {
   })
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(spawn('yarn', ['graphql-dev'])
+  .stdout.on('spawn', (data) => {console.log(data)})
+  .on('error', (err) => { console.log(err ); throw err }))
+.then(createWindow)
 
 app.on('window-all-closed', () => {
   win = null
@@ -102,6 +100,6 @@ ipcMain.handle('open-win', (event, arg) => {
     childWindow.loadFile(indexHtml, { hash: arg })
   } else {
     childWindow.loadURL(`${url}/#${arg}`)
-    // childWindow.webContents.openDevTools({ mode: "undocked", activate: true })
+    childWindow.webContents.openDevTools({ mode: "undocked", activate: true })
   }
 })

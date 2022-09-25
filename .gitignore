@@ -249,3 +249,5 @@ node_modules/
 
 # Serverless directories
 .serverless
+
+**/release/

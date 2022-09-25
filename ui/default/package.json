@@ -8,11 +8,15 @@
   },
   "scripts": {
     "mockdb": "cd ../../inspector && python3 generate_mock_data.py",
-    "dev": "concurrently \"cd app && yarn dev\" \"cd server && yarn dev\"",
-    "install:all": "yarn && (cd app && yarn) && (cd server && yarn)",
-    "clean:all": "(rm -rf -rf node_modules) && (cd app && rm -rf -rf node_modules) && (cd server && rm -rf node_modules)",
+    "dev": "cd app && yarn dev",
+    "graphql-dev" : "cd app && yarn graphql-dev",
+    "install:all": "yarn && (cd app && yarn)",
+    "clean:all": "(rm -rf -rf node_modules) && (cd app && rm -rf -rf node_modules)",
     "clean:db": "(rm -rf ../../inspector/configs.db) && (rm -rf ../../inspector/configs.db-shm) && (rm -rf ../../inspector/configs.db-wal) && (rm -rf ../../inspector/network_traffic.db) && (rm -rf ../../inspector/network_traffic.db-shm) && (rm -rf ../../inspector/network_traffic.db-wal) && (rm -rf ../../inspector/network_traffic2.db)",
     "client:build": "(rm -rf ./html/*) && (cd app && yarn build) && ( mv -v ./app/dist/* ./html)",
-    "prisma:generate": "npx prisma generate --schema server/prisma/network_traffic_schema.prisma ; npx prisma generate --schema server/prisma/configs_schema.prisma"
+    "prisma:generate": "npx prisma generate --schema app/server/prisma/network_traffic_schema.prisma ; npx prisma generate --schema app/server/prisma/configs_schema.prisma"
+  },
+  "devDependencies": {
+    "electron-packager": "^16.0.0"
   }
 }
