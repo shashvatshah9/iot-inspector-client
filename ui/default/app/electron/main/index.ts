@@ -1,6 +1,6 @@
 import { app, BrowserWindow, shell, ipcMain } from 'electron'
 import { release } from 'os'
-import { join } from 'path'
+import path, { join } from 'path'
 const spawn = require('child_process').spawn
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -12,11 +12,6 @@ if (!app.requestSingleInstanceLock()) {
   app.quit()
   process.exit(0)
 }
-
-// Remove electron security warnings
-// This warning only shows in development mode
-// Read more on https://www.electronjs.org/docs/latest/tutorial/security
-// process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 export const ROOT_PATH = {
   // /dist
@@ -37,9 +32,6 @@ async function createWindow() {
     icon: join(ROOT_PATH.public, 'favicon.ico'),
     webPreferences: {
       preload,
-      // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
-      // Consider using contextBridge.exposeInMainWorld
-      // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       nodeIntegration: true,
       contextIsolation: false,
     },
@@ -61,9 +53,9 @@ async function createWindow() {
   })
 }
 
-app.whenReady().then(spawn('yarn', ['graphql-dev'])
+app.whenReady().then(spawn('yarn', ['graphql-dev'], {cwd: __dirname})
   .stdout.on('spawn', (data) => {console.log(data)})
-  .on('error', (err) => { console.log(err ); throw err }))
+  .on('error', (err) => { console.log(err); throw err }))
 .then(createWindow)
 
 app.on('window-all-closed', () => {
