@@ -23,11 +23,11 @@ exports.Prisma = Prisma
 
 /**
  * Prisma Client JS version: 3.14.0
- * Query Engine version: 8d8414deb360336e4698a65aa45a1fbaf1ce13d8
+ * Query Engine version: c875e43600dfe042452e0b868f7a48b817b9640b
  */
 Prisma.prismaVersion = {
   client: "3.14.0",
-  engine: "8d8414deb360336e4698a65aa45a1fbaf1ce13d8"
+  engine: "c875e43600dfe042452e0b868f7a48b817b9640b"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -127,7 +127,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/cdnicoll/gitrepo/_ocupop/iot-inspector-client/ui/default/server/prisma/generated/configs_client",
+      "value": "/Users/shashvatshah/code/iot-inspector-client/ui/default/server/prisma/generated/configs_client",
       "fromEnvVar": null
     },
     "config": {
@@ -142,7 +142,7 @@ const config = {
   },
   "relativePath": "../..",
   "clientVersion": "3.14.0",
-  "engineVersion": "8d8414deb360336e4698a65aa45a1fbaf1ce13d8",
+  "engineVersion": "c875e43600dfe042452e0b868f7a48b817b9640b",
   "datasourceNames": [
     "db"
   ],

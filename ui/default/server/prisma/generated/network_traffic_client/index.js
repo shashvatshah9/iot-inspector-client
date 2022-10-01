@@ -23,11 +23,11 @@ exports.Prisma = Prisma
 
 /**
  * Prisma Client JS version: 3.14.0
- * Query Engine version: 461d6a05159055555eb7dfb337c9fb271cbd4d7e
+ * Query Engine version: c875e43600dfe042452e0b868f7a48b817b9640b
  */
 Prisma.prismaVersion = {
   client: "3.14.0",
-  engine: "461d6a05159055555eb7dfb337c9fb271cbd4d7e"
+  engine: "c875e43600dfe042452e0b868f7a48b817b9640b"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -152,7 +152,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/cdnicoll/gitrepo/_ocupop/iot-inspector-client/ui/default/server/prisma/generated/network_traffic_client",
+      "value": "/Users/shashvatshah/code/iot-inspector-client/ui/default/server/prisma/generated/network_traffic_client",
       "fromEnvVar": null
     },
     "config": {
@@ -167,7 +167,7 @@ const config = {
   },
   "relativePath": "../..",
   "clientVersion": "3.14.0",
-  "engineVersion": "461d6a05159055555eb7dfb337c9fb271cbd4d7e",
+  "engineVersion": "c875e43600dfe042452e0b868f7a48b817b9640b",
   "datasourceNames": [
     "db"
   ],
@@ -189,7 +189,7 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
-path.join(__dirname, "libquery_engine-darwin.dylib.node");
-path.join(process.cwd(), "server/prisma/generated/network_traffic_client/libquery_engine-darwin.dylib.node")
+path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
+path.join(process.cwd(), "server/prisma/generated/network_traffic_client/libquery_engine-darwin-arm64.dylib.node")
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "server/prisma/generated/network_traffic_client/schema.prisma")

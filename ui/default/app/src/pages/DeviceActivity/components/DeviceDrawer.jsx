@@ -3,16 +3,18 @@ import { Field, Form, Formik } from 'formik'
 import useDeviceInfo from '@hooks/useDeviceInfo'
 import TextInput from '@components/fields/TextInput'
 import CreateSelect from '@components/fields/CreateSelect'
+import SelectInput from '@components/fields/SelectInput'
 import useDevices from '@hooks/useDevices'
 import SELECTS from '@constants/selects'
+// import DEVICES from '@contants/devices'
 import { useEffect } from 'react'
 import { useMemo } from 'react'
-
+import Fuse from 'fuse.js'
 
 const DeviceDrawer = ({ deviceId }) => {
-  const { updateDeviceInfo, updateDeviceInfoLoading, updatedDeviceInfo } =
+  const { updateDeviceInfo } =
     useDeviceInfo({ deviceId })
-  const { devicesData, devicesDataLoading } = useDevices({ deviceId })
+  const { devicesData } = useDevices({ deviceId })
 
   const [initialValues, setInitialValues] = useState(undefined)
 
@@ -21,6 +23,24 @@ const DeviceDrawer = ({ deviceId }) => {
     tags = tags.map((tag) => ({ label: tag, value: tag }))
     return tags
   }
+  const devices = [
+    {
+        "deviceName" : "Alexa Echo",
+        "vendorName" : "Amazon"
+    },
+    {
+        "deviceName" : "Alexa Echo dot",
+        "vendorName" : "Amazon"
+    },
+    {
+        "deviceName" : "google home",
+        "vendorName" : "Google"
+    },
+    {
+        "deviceName" : "Mi home camera",
+        "vendorName" : "Mi"
+    }
+  ];
 
   const deviceSelects = useMemo(() => {
     // get all keywords into a value/label array.
@@ -43,9 +63,7 @@ const DeviceDrawer = ({ deviceId }) => {
 
     setInitialValues({
       deviceName:
-        selectedDevice?.device_info?.device_name ||
-        selectedDevice?.auto_name ||
-        '',
+        [selectedDevice?.auto_name],
       vendorName: selectedDevice?.device_info?.vendor_name || '',
       tags: parseTags(selectedDevice?.device_info?.tag_list) || [],
     })
@@ -62,6 +80,20 @@ const DeviceDrawer = ({ deviceId }) => {
     updateDeviceInfo(data)
   }
 
+  const deviceNames = useMemo(() => {
+    return devices.map(device => device.deviceName)
+  }, [devices])
+
+  const [deviceNameSelects, setDeviceNameSelects]= useState([]);
+  const [vendorNameSetSelects, setVendorNameSelects] = useState([]);
+
+  const fuseDevice = new Fuse(deviceNames);
+
+  const vendorNameSet = new Set()
+
+  devices.forEach(device => vendorNameSet.add(device.vendorName));
+  const fuseVendor = new Fuse(vendorNameSet)
+
   return (
     <aside className="menu-drawer device-details">
       {!initialValues ? (
@@ -73,7 +105,7 @@ const DeviceDrawer = ({ deviceId }) => {
           initialValues={initialValues}
           onSubmit={(values) => handleSubmit(values)}
         >
-          {({ values, setFieldValue, dirty }) => (
+          {({ setFieldValue }) => (
             <Form id="device-info-form" className="flex flex-col justify-between h-full">
               <div className="grid gap-4">
                 <Field
@@ -81,20 +113,36 @@ const DeviceDrawer = ({ deviceId }) => {
                   name="deviceName"
                   type="text"
                   label="Device Name"
+                  options={deviceNameSelects}
                   placeholder="Device Name"
-                  component={TextInput}
+                  component={SelectInput}
+                  isSearchable
                   className="w-full px-4 py-2 bg-gray-100 border-l-4 border-yellow-600 rounded-md"
-                  onChange={(value) => setFieldValue('deviceName', value)}
+                  onChange={(value) => {
+                      // setFieldValue('deviceName', value);
+                      console.log(value)
+                      const fuseDeviceSearch = fuseDevice.search(value);
+                      console.log('fuse', fuseDeviceSearch);
+                      setDeviceNameSelects(fuseDeviceSearch);
+                    }
+                  }
                 />
                 <Field
                   autoComplete="off"
                   name="vendorName"
                   type="text"
+                  options={vendorNameSetSelects}
                   label="Vendor"
                   placeholder="Vendor Name"
                   component={TextInput}
                   className="w-full px-4 py-2 bg-gray-100 border-l-4 border-yellow-600 rounded-md"
-                  onChange={(value) => setFieldValue('vendorName', value)}
+                  onChange={(value) => {
+                      setFieldValue('vendorName', value);
+                      const fuseVendorSearch = fuseVendor.search(value);
+                      console.log('fuse', fuseVendorSearch)
+                      // setVendorNameSelects(fuseVendorSearch);
+                    }
+                  }
                 />
                 <Field
                   name="tags"

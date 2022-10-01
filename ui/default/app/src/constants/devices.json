@@ -1,0 +1,18 @@
+[
+    {
+        "deviceName" : "Alexa Echo",
+        "vendorName" : "Amazon"
+    },
+    {
+        "deviceName" : "Alexa Echo dot",
+        "vendorName" : "Amazon"
+    },
+    {
+        "deviceName" : "google home",
+        "vendorName" : "Google"
+    },
+    {
+        "deviceName" : "Mi home camera",
+        "vendorName" : "Mi"
+    }
+]
